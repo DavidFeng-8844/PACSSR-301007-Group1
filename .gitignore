@@ -1,4 +1,6 @@
 # Logs
+src/models
+src/textures
 logs
 *.log
 npm-debug.log*
