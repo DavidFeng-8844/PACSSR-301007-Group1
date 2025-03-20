@@ -30,14 +30,14 @@ scene.add(lightHelper);
 const controls = new OrbitControls(camera, renderer.domElement);
 
 // Load a background image
-const myTexture = new THREE.TextureLoader().load('src/pexels-anniroenkae-2832432.jpg');
+const myTexture = new THREE.TextureLoader().load('src/textures/colorful.jpg');
 scene.background = myTexture;
 
 // Add a plate from stl in the middle of the scene
 function loadPlateModel(url, position, scale) {
   const loader = new STLLoader();
   loader.load(url, function (geometry) {
-    const texture = new THREE.TextureLoader().load('src/space.jpg');
+    const texture = new THREE.TextureLoader().load('src/textures/space.jpg');
     const material = new THREE.MeshStandardMaterial({ map: texture});
     const mesh = new THREE.Mesh(geometry, material);
     mesh.position.copy(position);
@@ -69,7 +69,7 @@ const pastryModels = [
 function loadPastryModel(modelInfo) {
   const loader = new STLLoader();
   loader.load(`src/models/${modelInfo.name}.stl`, function (geometry) {
-    const texture = new THREE.TextureLoader().load('src/space.jpg');
+    const texture = new THREE.TextureLoader().load('src/textures/space.jpg');
     const material = new THREE.MeshStandardMaterial({ map: texture });
     
     for (let i = 0; i < pastryCount; i++) {
