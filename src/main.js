@@ -63,7 +63,7 @@ const pastryModels = [
   { name: 'bearCookie', scale: new THREE.Vector3(0.8, 0.8, 0.8) },
   { name: 'cake', scale: new THREE.Vector3(0.1, 0.1, 0.1) },
   { name: 'cupcake', scale: new THREE.Vector3(0.1, 0.1, 0.1) },
-  { name: 'mooncake', scale: new THREE.Vector3(0.1, 0.1, 0.1) }
+  { name: 'mooncake', scale: new THREE.Vector3(0.5, 0.5, 0.5) }
 ];
 
 function loadPastryModel(modelInfo) {
