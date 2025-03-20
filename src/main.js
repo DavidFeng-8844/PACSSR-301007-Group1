@@ -1,7 +1,7 @@
 import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'; // Changed from STLLoader to OBJLoader
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -11,7 +11,7 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-camera.position.set(0, 20, 30);
+camera.position.set(20, 30, 10);
 
 // Add Lighting
 const pointLight = new THREE.PointLight(0xffffff);
@@ -33,22 +33,25 @@ const controls = new OrbitControls(camera, renderer.domElement);
 const myTexture = new THREE.TextureLoader().load('src/textures/colorful.jpg');
 scene.background = myTexture;
 
-// Add a plate from stl in the middle of the scene
+// Add a plate from obj in the middle of the scene
 function loadPlateModel(url, position, scale) {
-  const loader = new STLLoader();
-  loader.load(url, function (geometry) {
-    const texture = new THREE.TextureLoader().load('src/textures/space.jpg');
-    const material = new THREE.MeshStandardMaterial({ map: texture});
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.copy(position);
-    mesh.scale.set(scale.x, scale.y, scale.z);
-    mesh.rotation.set(-Math.PI / 2, 0, 0);
-    scene.add(mesh);
+  const loader = new OBJLoader();
+  loader.load(url, function (object) {
+    const texture = new THREE.TextureLoader().load('src/textures/plate.png');
+    object.traverse(function (child) {
+      if (child instanceof THREE.Mesh) {
+        child.material = new THREE.MeshStandardMaterial({ map: texture });
+      }
+    });
+    object.position.copy(position);
+    object.scale.set(scale.x, scale.y, scale.z);
+    object.rotation.set(Math.PI / 1000, 0, 0);
+    scene.add(object);
   });
 }
 
 // Adjust the plate position
-loadPlateModel('src/models/plate.stl', new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.5, 0.5, 0.5));
+loadPlateModel('src/models/plate.obj', new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.5, 0.5, 0.5));
 
 // Variables for pastries
 const pastries = [];
@@ -59,21 +62,25 @@ const pastryCount = 5; // Number of each type of pastry
 const gravity = -0.001;
 
 const pastryModels = [
-  { name: 'Cookie', scale: new THREE.Vector3(0.1, 0.1, 0.1) },
-  { name: 'bearCookie', scale: new THREE.Vector3(0.8, 0.8, 0.8) },
+  { name: 'Cookie', scale: new THREE.Vector3(0.2, 0.2, 0.2) },
+  { name: 'bearCookie', scale: new THREE.Vector3(0.4, 0.4, 0.4) },
   { name: 'cake', scale: new THREE.Vector3(0.1, 0.1, 0.1) },
   { name: 'cupcake', scale: new THREE.Vector3(0.1, 0.1, 0.1) },
-  { name: 'mooncake', scale: new THREE.Vector3(0.5, 0.5, 0.5) }
+  { name: 'mooncake', scale: new THREE.Vector3(0.3, 0.3, 0.3) }
 ];
 
 function loadPastryModel(modelInfo) {
-  const loader = new STLLoader();
-  loader.load(`src/models/${modelInfo.name}.stl`, function (geometry) {
-    const texture = new THREE.TextureLoader().load('src/textures/space.jpg');
-    const material = new THREE.MeshStandardMaterial({ map: texture });
+  const loader = new OBJLoader();
+  loader.load(`src/models/${modelInfo.name}.obj`, function (object) {
+    const texture = new THREE.TextureLoader().load(`src/textures/${modelInfo.name}.png`);
+    object.traverse(function (child) {
+      if (child instanceof THREE.Mesh) {
+        child.material = new THREE.MeshStandardMaterial({ map: texture });
+      }
+    });
     
     for (let i = 0; i < pastryCount; i++) {
-      const pastry = new THREE.Mesh(geometry, material);
+      const pastry = object.clone();
       pastry.position.set(
         THREE.MathUtils.randFloatSpread(20),
         10 + Math.random() * 20,
