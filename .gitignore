@@ -1,6 +1,6 @@
 # Logs
-src/models
-src/textures
+./src/models
+./src/textures
 logs
 *.log
 npm-debug.log*
