@@ -94,35 +94,74 @@ function loadPastryModel(modelInfo) {
   });
 }
 
+// Restart 
+function resetPastries() {
+  pastries.forEach((pastry) => {
+    pastry.mesh.position.set(
+      THREE.MathUtils.randFloatSpread(20),
+      10 + Math.random() * 20,
+      THREE.MathUtils.randFloatSpread(10)
+    );
+    pastry.velocity = 0;
+    pastry.mesh.rotation.set(-Math.PI / 2, 0, 0);
+  });
+}
+
 // Load all pastry models
 pastryModels.forEach(loadPastryModel);
 
 // Animate function
 function animate() {
   requestAnimationFrame(animate);
-  pastries.forEach((pastry) => {
-    // Apply gravity
-    pastry.velocity += gravity;
-    pastry.mesh.position.y += pastry.velocity;
+  if (pastries.length > 0) {
+    pastries.forEach((pastry) => {
+      // Apply gravity
+      pastry.velocity += gravity;
+      pastry.mesh.position.y += pastry.velocity;
 
-    // Check for bounce
-    if (pastry.mesh.position.y <= plateY + 1) {
-      pastry.mesh.position.y = plateY + 1;
-      pastry.velocity *= -bounceFactor;
-      
-      // Add a minimum bounce threshold to eventually stop bouncing
-      if (Math.abs(pastry.velocity) < 0.01) {
-        pastry.velocity = 0;
+      // Check for bounce
+      if (pastry.mesh.position.y <= plateY + 1) {
+        pastry.mesh.position.y = plateY + 1;
+        pastry.velocity *= -bounceFactor;
+        
+        // Add a minimum bounce threshold to eventually stop bouncing
+        if (Math.abs(pastry.velocity) < 0.01) {
+          pastry.velocity = 0;
+        }
       }
-    }
 
-    // Rotate the pastry only if it's still moving
-    if (Math.abs(pastry.velocity) > 0.01) {
-      pastry.mesh.rotation.x += 0.01;
-      pastry.mesh.rotation.y += 0.01;
-    }
-  });
+      // Rotate the pastry only if it's still moving
+      if (Math.abs(pastry.velocity) > 0.01) {
+        pastry.mesh.rotation.x += 0.01;
+        pastry.mesh.rotation.y += 0.01;
+      }
+    });
+  }
   controls.update();
   renderer.render(scene, camera);
 }
+
 animate();
+
+// Add Mouse Event Listender
+document.addEventListener('mousemove', onMouseMove);
+
+function onMouseMove(event) {
+  const description = document.getElementById('description');
+  const threshold = window.innerHeight - 100; // 100px to the bottom
+
+  if (event.clientY > threshold) {
+    description.style.bottom = '0';
+  } else {
+    description.style.bottom = '-200px';
+  }
+}
+
+window.addEventListener('resize', onWindowResize);
+document.getElementById('resetButton').addEventListener('click', resetPastries);
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
