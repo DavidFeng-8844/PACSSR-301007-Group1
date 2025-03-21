@@ -29,8 +29,8 @@ scene.add(lightHelper);
 const controls = new OrbitControls(camera, renderer.domElement);
 
 // Load a background image
-// const myTexture = new THREE.TextureLoader().load('src/textures/colorful.jpg');
-const myTexture = new THREE.TextureLoader().load(`${import.meta.env.BASE_URL}src/textures/colorful.jpg`);
+const myTexture = new THREE.TextureLoader().load('textures/colorful.jpg');
+// const myTexture = new THREE.TextureLoader().load(`${import.meta.env.BASE_URL}textures/colorful.jpg`);
 
 scene.background = myTexture;
 
@@ -38,8 +38,8 @@ scene.background = myTexture;
 function loadPlateModel(url, position, scale) {
   const loader = new OBJLoader();
   loader.load(url, function (object) {
-    // const texture = new THREE.TextureLoader().load('src/textures/plate.png');
-    const texture = new THREE.TextureLoader().load(`${import.meta.env.BASE_URL}src/textures/plate.png`);
+    const texture = new THREE.TextureLoader().load('textures/plate.png');
+    // const texture = new THREE.TextureLoader().load(`${import.meta.env.BASE_URL}src/textures/plate.png`);
     object.traverse(function (child) {
       if (child instanceof THREE.Mesh) {
         child.material = new THREE.MeshStandardMaterial({ map: texture });
@@ -53,8 +53,8 @@ function loadPlateModel(url, position, scale) {
 }
 
 // Adjust the plate position
-// loadPlateModel('src/models/plate.obj', new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.5, 0.5, 0.5));
-loadPlateModel(`${import.meta.env.BASE_URL}/src/models/plate.obj`, new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.5, 0.5, 0.5));
+loadPlateModel('models/plate.obj', new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.5, 0.5, 0.5));
+// loadPlateModel(`${import.meta.env.BASE_URL}/src/models/plate.obj`, new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.5, 0.5, 0.5));
 
 // Variables for pastries
 const pastries = [];
@@ -74,10 +74,10 @@ const pastryModels = [
 
 function loadPastryModel(modelInfo) {
   const loader = new OBJLoader();
-  // loader.load(`src/models/${modelInfo.name}.obj`, function (object) {
-  loader.load(`${import.meta.env.BASE_URL}src/models/${modelInfo.name}.obj`, function (object) {
-    // const texture = new THREE.TextureLoader().load(`src/textures/${modelInfo.name}.png`);
-    const texture = new THREE.TextureLoader().load(`${import.meta.env.BASE_URL}src/textures/${modelInfo.name}.png`);
+  loader.load(`models/${modelInfo.name}.obj`, function (object) {
+  // loader.load(`${import.meta.env.BASE_URL}src/models/${modelInfo.name}.obj`, function (object) {
+    const texture = new THREE.TextureLoader().load(`textures/${modelInfo.name}.png`);
+    // const texture = new THREE.TextureLoader().load(`${import.meta.env.BASE_URL}src/textures/${modelInfo.name}.png`);
     object.traverse(function (child) {
       if (child instanceof THREE.Mesh) {
         child.material = new THREE.MeshStandardMaterial({ map: texture });
