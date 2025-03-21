@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/PACSSR-301007-Group5/',
+  base: '/PACSSR-301007-Group1/',
 })
