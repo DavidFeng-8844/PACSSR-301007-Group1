@@ -29,17 +29,14 @@ scene.add(lightHelper);
 const controls = new OrbitControls(camera, renderer.domElement);
 
 // Load a background image
-// const myTexture = new THREE.TextureLoader().load('src/textures/colorful.jpg');
-const myTexture = new THREE.TextureLoader().load(`${import.meta.env.BASE_URL}textures/colorful.jpg`);
-
+const myTexture = new THREE.TextureLoader().load('src/textures/colorful.jpg');
 scene.background = myTexture;
 
 // Add a plate from obj in the middle of the scene
 function loadPlateModel(url, position, scale) {
   const loader = new OBJLoader();
   loader.load(url, function (object) {
-    // const texture = new THREE.TextureLoader().load('src/textures/plate.png');
-    const texture = new THREE.TextureLoader().load(`${import.meta.env.BASE_URL}textures/plate.png`);
+    const texture = new THREE.TextureLoader().load('src/textures/plate.png');
     object.traverse(function (child) {
       if (child instanceof THREE.Mesh) {
         child.material = new THREE.MeshStandardMaterial({ map: texture });
@@ -53,8 +50,7 @@ function loadPlateModel(url, position, scale) {
 }
 
 // Adjust the plate position
-// loadPlateModel('src/models/plate.obj', new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.5, 0.5, 0.5));
-loadPlateModel(`${import.meta.env.BASE_URL}models/plate.obj`, new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.5, 0.5, 0.5));
+loadPlateModel('src/models/plate.obj', new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0.5, 0.5, 0.5));
 
 // Variables for pastries
 const pastries = [];
@@ -74,10 +70,8 @@ const pastryModels = [
 
 function loadPastryModel(modelInfo) {
   const loader = new OBJLoader();
-  // loader.load(`src/models/${modelInfo.name}.obj`, function (object) {
-  loader.load(`${import.meta.env.BASE_URL}/models/${modelInfo.name}.obj`, function (object) {
-    // const texture = new THREE.TextureLoader().load(`src/textures/${modelInfo.name}.png`);
-    const texture = new THREE.TextureLoader().load(`${import.meta.env.BASE_URL}textures/${modelInfo.name}.png`);
+  loader.load(`src/models/${modelInfo.name}.obj`, function (object) {
+    const texture = new THREE.TextureLoader().load(`src/textures/${modelInfo.name}.png`);
     object.traverse(function (child) {
       if (child instanceof THREE.Mesh) {
         child.material = new THREE.MeshStandardMaterial({ map: texture });
@@ -164,6 +158,7 @@ function onMouseMove(event) {
 }
 
 window.addEventListener('resize', onWindowResize);
+
 document.getElementById('resetButton').addEventListener('click', resetPastries);
 
 function onWindowResize() {
