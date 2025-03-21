@@ -158,6 +158,7 @@ function onMouseMove(event) {
 }
 
 window.addEventListener('resize', onWindowResize);
+
 document.getElementById('resetButton').addEventListener('click', resetPastries);
 
 function onWindowResize() {
